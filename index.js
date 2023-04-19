@@ -3,7 +3,10 @@ const mongoose= require('mongoose')
 const cors = require('cors');
 const userModel = require('./models/Users')
 
+const userRouter = require('./routers/user.routers')
 const tripRouter = require('./routers/trip.routers')
+const installmentRouter = require('./routers/installment.routers')
+
 
 const app = express()
 
@@ -18,27 +21,6 @@ mongoose.connect("mongodb+srv://TestUser:Root123@cluster0.ph65kra.mongodb.net/ex
     .then(()=>console.log("connected to db"))
     .catch(()=> console.log("error"))
 
+app.use(userRouter);   
 app.use(tripRouter);
-
-app.get('/getUsers', async (req, res) => {
-	const todos = await userModel.find();
-
-	res.json(todos);
-});
-
-app.post('/createUsers', async(req,res) => {
-    const user = req.body;
-    const newUser = new userModel(user);
-    await newUser.save();
-    res.json(newUser);
-})
-
-app.post('/login', async(req,res) => {
-    const todos = await userModel.find({name: req.body['name'], password: req.body['password']});
-    if(todos.length>0){
-        res.json(todos);
-    }else{
-        res.sendStatus(404);
-    }
-	
-})
+app.use(installmentRouter);

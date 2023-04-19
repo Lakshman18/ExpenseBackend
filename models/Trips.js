@@ -31,7 +31,7 @@ const tripSchema = new mongoose.Schema({
 })
 
 tripSchema.virtual('TripExpense',{
-    ref:'TripExpensess',
+    ref:'TripExpenses',
     localField:'_id',
     foreignField:'trip'
 })
