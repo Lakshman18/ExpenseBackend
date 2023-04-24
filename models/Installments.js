@@ -13,6 +13,10 @@ const installmentSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    paymentMethod: {
+        type: String,
+        required: true,
+    },
     installmentNo: {
         type: Number,
         required: true,
@@ -21,11 +25,18 @@ const installmentSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
+    perPersonAmount: {
+        type: Number,
+        required: true,
+    },
     user: {
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'Users'
-    }
-})
+            ref: 'Users',
+            required: false,
+    },
+},
+    { strict: false}
+)
  
 const installmentModel = mongoose.model("Installments", installmentSchema)
 
