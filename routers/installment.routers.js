@@ -13,10 +13,19 @@ router.get('/getInstallments', async (req, res) => {
         
         for(var i=0; i<3; i++){
             let tempItem = {month:'', items:[]}
-            var firstDay = new Date(date.getFullYear(), date.getMonth()+i, 1).toLocaleString('en-US', { timeZone: 'Asia/Colombo' });;
-            var lastDay = new Date(date.getFullYear(), date.getMonth()+1+i, 0).toLocaleString('en-US', { timeZone: 'Asia/Colombo' });;
+            let firstDay;
+            if(i==0){
+                firstDay = new Date().toLocaleString('en-US', { timeZone: 'Asia/Colombo' });
+            }
+            else{
+                firstDay = new Date(date.getFullYear(), date.getMonth()+i, 1).toLocaleString('en-US', { timeZone: 'Asia/Colombo' });;
+            }
+            console.log(firstDay)
+            let lastDay = new Date(date.getFullYear(), date.getMonth()+1+i, 0).toLocaleString('en-US', { timeZone: 'Asia/Colombo' });;
             var installments = await Installments.find({date:{$gte: firstDay, $lte: lastDay} });
-           
+            installments.sort(function(a,b){
+                return new Date(a.date) - new Date(b.date);
+            });
             installments.map(item=> tempItem.items.push(item) )
             tempItem.month = getMonthName(date.getMonth()+1+i)
             result.push(tempItem) 
